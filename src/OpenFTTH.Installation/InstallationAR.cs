@@ -28,6 +28,14 @@ public class InstallationAR : AggregateBase
                     $"Cannot create, it has already been created: {nameof(Id)}: '{Id}'"));
         }
 
+        if (IsIdValid(Id))
+        {
+            return Result.Fail(
+                new InstallationError(
+                    InstallationErrorCode.ID_INVALID,
+                    $"Id is invalid: '{Id}'"));
+        }
+
         RaiseEvent(
             new InstallationCreated(
                 id: id,

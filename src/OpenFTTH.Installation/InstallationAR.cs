@@ -34,7 +34,7 @@ public class InstallationAR : AggregateBase
                     $"Cannot create, it has already been created: {nameof(Id)}: '{Id}'"));
         }
 
-        if (!IsIdValid(Id))
+        if (!IsIdValid(id))
         {
             return Result.Fail(
                 new InstallationError(

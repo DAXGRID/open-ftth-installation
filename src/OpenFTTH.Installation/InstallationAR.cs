@@ -12,6 +12,12 @@ public class InstallationAR : AggregateBase
     public string? LocationRemark { get; private set; }
     public Guid UnitAddressId { get; private set; }
 
+    public InstallationAR()
+    {
+        Register<InstallationCreated>(Apply);
+    }
+
+
     public Result Create(
         Guid id,
         string installationId,
@@ -28,7 +34,7 @@ public class InstallationAR : AggregateBase
                     $"Cannot create, it has already been created: {nameof(Id)}: '{Id}'"));
         }
 
-        if (IsIdValid(Id))
+        if (!IsIdValid(Id))
         {
             return Result.Fail(
                 new InstallationError(
@@ -46,6 +52,16 @@ public class InstallationAR : AggregateBase
                 unitAddressId: unitAddressId));
 
         return Result.Ok();
+    }
+
+    private void Apply(InstallationCreated installationCreated)
+    {
+        Id = installationCreated.Id;
+        InstallationId = installationCreated.InstallationId;
+        Status = installationCreated.Status;
+        Remark = installationCreated.Remark;
+        LocationRemark = installationCreated.LocationRemark;
+        UnitAddressId = installationCreated.UnitAddressId;
     }
 
     private static bool IsInitialized(Guid id)

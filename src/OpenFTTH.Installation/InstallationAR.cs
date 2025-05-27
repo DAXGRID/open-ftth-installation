@@ -8,7 +8,7 @@ public class InstallationAR : AggregateBase
 {
     public string InstallationId { get; private set; } = string.Empty;
     public string Status { get; private set; } = string.Empty;
-    public string Remark { get; private set; } = string.Empty;
+    public string? Remark { get; private set; }
     public string? LocationRemark { get; private set; }
     public Guid UnitAddressId { get; private set; }
 
@@ -17,13 +17,12 @@ public class InstallationAR : AggregateBase
         Register<InstallationCreated>(Apply);
     }
 
-
     public Result Create(
         Guid id,
         string installationId,
         string status,
-        string remark,
-        string locationRemark,
+        string? remark,
+        string? locationRemark,
         Guid unitAddressId)
     {
         if (IsInitialized(Id))

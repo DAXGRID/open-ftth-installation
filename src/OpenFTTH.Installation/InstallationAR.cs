@@ -49,14 +49,6 @@ public class InstallationAR : AggregateBase
                     $"Installation ID cannot be NULL or just white space: '{installationId}'."));
         }
 
-        if (!InstallationIdValid(installationId))
-        {
-            return Result.Fail(
-                new InstallationError(
-                    InstallationErrorCode.INSTALLATION_ID_INVALID,
-                    $"Installation ID cannot be NULL or just white space: '{installationId}'."));
-        }
-
         if (!UnitAddressIdValid(unitAddressId))
         {
             return Result.Fail(

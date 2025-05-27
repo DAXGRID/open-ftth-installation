@@ -15,6 +15,7 @@ public class InstallationAR : AggregateBase
     public InstallationAR()
     {
         Register<InstallationCreated>(Apply);
+        Register<InstallationStatusChanged>(Apply);
     }
 
     public Result Create(
@@ -69,6 +70,16 @@ public class InstallationAR : AggregateBase
         return Result.Ok();
     }
 
+    public Result ChangeStatus(string? status)
+    {
+        RaiseEvent(
+           new InstallationStatusChanged(
+               id: Id,
+               status: status));
+
+        return Result.Ok();
+    }
+
     private void Apply(InstallationCreated installationCreated)
     {
         Id = installationCreated.Id;
@@ -77,6 +88,11 @@ public class InstallationAR : AggregateBase
         Remark = installationCreated.Remark;
         LocationRemark = installationCreated.LocationRemark;
         UnitAddressId = installationCreated.UnitAddressId;
+    }
+
+    private void Apply(InstallationStatusChanged installationStatusChanged)
+    {
+        Status = installationStatusChanged.Status;
     }
 
     private static bool UnitAddressIdValid(Guid? unitAddressId)

@@ -5,7 +5,8 @@ namespace OpenFTTH.Installation;
 public enum InstallationErrorCode
 {
     ALREADY_CREATED,
-    ID_INVALID
+    ID_INVALID,
+    INSTALLATION_ID_INVALID
 }
 
 public class InstallationError : Error

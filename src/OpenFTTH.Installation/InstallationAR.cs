@@ -41,6 +41,14 @@ public class InstallationAR : AggregateBase
                     $"Id is invalid: '{Id}'"));
         }
 
+        if (!InstallationIdValid(installationId))
+        {
+            return Result.Fail(
+                new InstallationError(
+                    InstallationErrorCode.INSTALLATION_ID_INVALID,
+                    $"Installation ID cannot be NULL or just white space: '{installationId}'."));
+        }
+
         RaiseEvent(
             new InstallationCreated(
                 id: id,
@@ -61,6 +69,11 @@ public class InstallationAR : AggregateBase
         Remark = installationCreated.Remark;
         LocationRemark = installationCreated.LocationRemark;
         UnitAddressId = installationCreated.UnitAddressId;
+    }
+
+    private static bool InstallationIdValid(string id)
+    {
+        return !string.IsNullOrWhiteSpace(id);
     }
 
     private static bool IsInitialized(Guid id)

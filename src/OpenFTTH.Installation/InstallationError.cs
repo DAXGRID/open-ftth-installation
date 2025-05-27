@@ -6,7 +6,8 @@ public enum InstallationErrorCode
 {
     ALREADY_CREATED,
     ID_INVALID,
-    INSTALLATION_ID_INVALID
+    INSTALLATION_ID_INVALID,
+    UNIT_ADDRESS_ID_INVALID
 }
 
 public class InstallationError : Error

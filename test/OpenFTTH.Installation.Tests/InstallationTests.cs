@@ -104,6 +104,35 @@ public class InstallationTests
         Assert.True(createInstallationResult.Errors.Count() == 0);
     }
 
+    [Theory, Order(1)]
+    [InlineData("00000000-0000-0000-0000-000000000000")]
+    public void Unit_address_id_invalid_data(string unitAddressId)
+    {
+        var id = Guid.NewGuid();
+        var status = "Opened";
+        var remark = "Remark";
+        var locationRemark = "Location remark";
+        var installationId = "AB12345";
+
+        var installation = new InstallationAR();
+
+        var createInstallationResult = installation.Create(
+            id,
+            installationId,
+            status,
+            remark,
+            locationRemark,
+            Guid.Parse(unitAddressId));
+
+        Assert.True(createInstallationResult.IsFailed);
+        Assert.True(createInstallationResult.Errors.Count() == 1);
+        Assert.True(
+            ((InstallationError)createInstallationResult
+             .Errors
+             .First()
+            ).Code == InstallationErrorCode.UNIT_ADDRESS_ID_INVALID);
+    }
+
     [Fact, Order(2)]
     public void Can_create_installation_stored()
     {

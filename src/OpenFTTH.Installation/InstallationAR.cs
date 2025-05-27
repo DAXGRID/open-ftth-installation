@@ -30,7 +30,7 @@ public class InstallationAR : AggregateBase
             return Result.Fail(
                 new InstallationError(
                     InstallationErrorCode.ALREADY_CREATED,
-                    $"Cannot create, it has already been created: {nameof(Id)}: '{Id}'"));
+                    $"Cannot create, it has already been created: {nameof(Id)}: '{id}'."));
         }
 
         if (!IsIdValid(id))
@@ -38,7 +38,7 @@ public class InstallationAR : AggregateBase
             return Result.Fail(
                 new InstallationError(
                     InstallationErrorCode.ID_INVALID,
-                    $"Id is invalid: '{Id}'"));
+                    $"Id is invalid: '{id}'."));
         }
 
         if (!InstallationIdValid(installationId))

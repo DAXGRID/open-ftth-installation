@@ -63,7 +63,6 @@ public class InstallationTests
             locationRemark,
             unitAddressId);
 
-
         _eventStore.Aggregates.Store(installation);
 
         Assert.True(createInstallationResult.IsSuccess);

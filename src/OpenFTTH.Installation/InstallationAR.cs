@@ -7,10 +7,10 @@ namespace OpenFTTH.Installation;
 public class InstallationAR : AggregateBase
 {
     public string InstallationId { get; private set; } = string.Empty;
-    public string Status { get; private set; } = string.Empty;
+    public string? Status { get; private set; }
     public string? Remark { get; private set; }
     public string? LocationRemark { get; private set; }
-    public Guid UnitAddressId { get; private set; }
+    public Guid? UnitAddressId { get; private set; }
 
     public InstallationAR()
     {
@@ -20,10 +20,10 @@ public class InstallationAR : AggregateBase
     public Result Create(
         Guid id,
         string installationId,
-        string status,
+        string? status,
         string? remark,
         string? locationRemark,
-        Guid unitAddressId)
+        Guid? unitAddressId)
     {
         if (IsInitialized(Id))
         {

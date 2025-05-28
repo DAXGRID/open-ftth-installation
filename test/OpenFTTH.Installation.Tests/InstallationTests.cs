@@ -370,7 +370,7 @@ public class InstallationTests
     }
 
     [Fact, Order(3)]
-    public void Canot_change_installation_status_to_the_same_value()
+    public void Cannot_change_installation_status_to_the_same_value()
     {
         var id = Guid.Parse("75b98e4b-9b82-4a1a-99a5-097b1c65d1ad");
         var status = "Changed";

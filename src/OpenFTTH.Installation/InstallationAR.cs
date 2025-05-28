@@ -135,6 +135,14 @@ public class InstallationAR : AggregateBase
                     $"Cannot update something that has not been initialized."));
         }
 
+        if (LocationRemark == locationRemark)
+        {
+            return Result.Fail(
+                new InstallationError(
+                    InstallationErrorCode.NO_CHANGES,
+                    $"Cannot update {nameof(LocationRemark)}, no changes was detected between: '{LocationRemark}' and '{locationRemark}'."));
+        }
+
         RaiseEvent(
            new InstallationLocationRemarkChanged(
                id: Id,

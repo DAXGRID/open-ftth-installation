@@ -288,14 +288,14 @@ public class InstallationTests
 
         var installation = _eventStore.Aggregates.Load<InstallationAR>(id);
 
-        var changeLocationRemark = installation.ChangeLocationRemark(locationRemark);
+        var changeLocationRemarkResult = installation.ChangeLocationRemark(locationRemark);
 
         _eventStore.Aggregates.Store(installation);
 
         installation = _eventStore.Aggregates.Load<InstallationAR>(id);
 
-        Assert.True(changeLocationRemark.IsSuccess);
-        Assert.True(changeLocationRemark.Errors.Count() == 0);
+        Assert.True(changeLocationRemarkResult.IsSuccess);
+        Assert.True(changeLocationRemarkResult.Errors.Count() == 0);
         Assert.True(installation.Id == id);
         Assert.True(installation.InstallationId == installationId);
         Assert.True(installation.Status == status);
@@ -353,14 +353,14 @@ public class InstallationTests
 
         var installation = _eventStore.Aggregates.Load<InstallationAR>(id);
 
-        var changeLocationRemark = installation.ChangeLocationRemark(locationRemark);
+        var unitAddressChangedResult = installation.ChangeUnitAddressId(unitAddressId);
 
         _eventStore.Aggregates.Store(installation);
 
         installation = _eventStore.Aggregates.Load<InstallationAR>(id);
 
-        Assert.True(changeLocationRemark.IsSuccess);
-        Assert.True(changeLocationRemark.Errors.Count() == 0);
+        Assert.True(unitAddressChangedResult.IsSuccess);
+        Assert.True(unitAddressChangedResult.Errors.Count() == 0);
         Assert.True(installation.Id == id);
         Assert.True(installation.InstallationId == installationId);
         Assert.True(installation.Status == status);
@@ -404,6 +404,25 @@ public class InstallationTests
         Assert.True(changeRemarkResult.Errors.Count() == 1);
         Assert.True(
             ((InstallationError)changeRemarkResult
+             .Errors
+             .First()
+            ).Code == InstallationErrorCode.NO_CHANGES);
+    }
+
+    [Fact, Order(4)]
+    public void Cannot_change_installation_location_remark_to_the_same_value()
+    {
+        var id = Guid.Parse("75b98e4b-9b82-4a1a-99a5-097b1c65d1ad");
+        var locationRemark = "Updated location remark";
+
+        var installation = _eventStore.Aggregates.Load<InstallationAR>(id);
+
+        var changeLocationRemarkResult = installation.ChangeLocationRemark(locationRemark);
+
+        Assert.True(changeLocationRemarkResult.IsFailed);
+        Assert.True(changeLocationRemarkResult.Errors.Count() == 1);
+        Assert.True(
+            ((InstallationError)changeLocationRemarkResult
              .Errors
              .First()
             ).Code == InstallationErrorCode.NO_CHANGES);

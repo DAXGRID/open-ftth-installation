@@ -169,6 +169,14 @@ public class InstallationAR : AggregateBase
                     $"Unit address ID cannot be an empty guid: '{unitAddressId}'."));
         }
 
+        if (UnitAddressId == unitAddressId)
+        {
+            return Result.Fail(
+                new InstallationError(
+                    InstallationErrorCode.NO_CHANGES,
+                    $"Cannot update {nameof(UnitAddressId)}, no changes was detected between: '{UnitAddressId}' and '{unitAddressId}'."));
+        }
+
         RaiseEvent(
            new InstallationUnitAddressChanged(
                id: Id,

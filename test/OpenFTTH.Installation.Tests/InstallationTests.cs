@@ -349,7 +349,7 @@ public class InstallationTests
         var status = "Changed";
         var remark = "Updated Remark";
         var locationRemark = "Updated location remark";
-        var unitAddressId = Guid.Parse("772ca9c1-6ac6-478a-8797-633a3cd012ea");
+        var unitAddressId = Guid.Parse("8c2b8732-271e-464b-a112-b34cfc62a497");
 
         var installation = _eventStore.Aggregates.Load<InstallationAR>(id);
 

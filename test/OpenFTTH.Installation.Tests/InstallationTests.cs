@@ -236,20 +236,20 @@ public class InstallationTests
         var id = Guid.Parse("75b98e4b-9b82-4a1a-99a5-097b1c65d1ad");
         var installationId = "F12345";
         var status = "Changed";
-        var remark = "Changed";
+        var remark = "Updated Remark";
         var locationRemark = "Location remark";
         var unitAddressId = Guid.Parse("772ca9c1-6ac6-478a-8797-633a3cd012ea");
 
         var installation = _eventStore.Aggregates.Load<InstallationAR>(id);
 
-        var changeStatusResult = installation.ChangeRemark(status);
+        var changeRemarkResult = installation.ChangeRemark(remark);
 
         _eventStore.Aggregates.Store(installation);
 
         installation = _eventStore.Aggregates.Load<InstallationAR>(id);
 
-        Assert.True(changeStatusResult.IsSuccess);
-        Assert.True(changeStatusResult.Errors.Count() == 0);
+        Assert.True(changeRemarkResult.IsSuccess);
+        Assert.True(changeRemarkResult.Errors.Count() == 0);
         Assert.True(installation.Id == id);
         Assert.True(installation.InstallationId == installationId);
         Assert.True(installation.Status == status);

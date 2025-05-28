@@ -388,4 +388,24 @@ public class InstallationTests
              .First()
             ).Code == InstallationErrorCode.NO_CHANGES);
     }
+
+    [Fact, Order(4)]
+    public void Cannot_change_installation_remark_to_the_same_value()
+    {
+        var id = Guid.Parse("75b98e4b-9b82-4a1a-99a5-097b1c65d1ad");
+        var remark = "Updated Remark";
+
+        var installation = _eventStore.Aggregates.Load<InstallationAR>(id);
+        var changeRemarkResult = installation.ChangeRemark(remark);
+
+        installation = _eventStore.Aggregates.Load<InstallationAR>(id);
+
+        Assert.True(changeRemarkResult.IsFailed);
+        Assert.True(changeRemarkResult.Errors.Count() == 1);
+        Assert.True(
+            ((InstallationError)changeRemarkResult
+             .Errors
+             .First()
+            ).Code == InstallationErrorCode.NO_CHANGES);
+    }
 }

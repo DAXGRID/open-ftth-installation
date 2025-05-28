@@ -17,6 +17,7 @@ public class InstallationAR : AggregateBase
         Register<InstallationCreated>(Apply);
         Register<InstallationStatusChanged>(Apply);
         Register<InstallationRemarkChanged>(Apply);
+        Register<InstallationLocationRemarkChanged>(Apply);
     }
 
     public Result Create(
@@ -107,6 +108,24 @@ public class InstallationAR : AggregateBase
         return Result.Ok();
     }
 
+    public Result ChangeLocationRemark(string? locationRemark)
+    {
+        if (!IsInitialized(Id))
+        {
+            return Result.Fail(
+                new InstallationError(
+                    InstallationErrorCode.NOT_INITIALIZED,
+                    $"Cannot update something that has not been initialized."));
+        }
+
+        RaiseEvent(
+           new InstallationLocationRemarkChanged(
+               id: Id,
+               locationRemark: locationRemark));
+
+        return Result.Ok();
+    }
+
     private void Apply(InstallationCreated installationCreated)
     {
         Id = installationCreated.Id;
@@ -125,6 +144,11 @@ public class InstallationAR : AggregateBase
     private void Apply(InstallationRemarkChanged installationRemarkChanged)
     {
         Remark = installationRemarkChanged.Remark;
+    }
+
+    private void Apply(InstallationLocationRemarkChanged installationLocationRemarkChanged)
+    {
+        LocationRemark = installationLocationRemarkChanged.LocationRemark;
     }
 
     private static bool UnitAddressIdValid(Guid? unitAddressId)

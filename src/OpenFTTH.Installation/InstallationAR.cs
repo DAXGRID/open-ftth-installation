@@ -83,6 +83,14 @@ public class InstallationAR : AggregateBase
                     $"Cannot update something that has not been initialized."));
         }
 
+        if (Status == status)
+        {
+            return Result.Fail(
+                new InstallationError(
+                    InstallationErrorCode.NO_CHANGES,
+                    $"Cannot update {nameof(Status)}, no changes was detected between: '{Status}' and '{status}'."));
+        }
+
         RaiseEvent(
            new InstallationStatusChanged(
                id: Id,

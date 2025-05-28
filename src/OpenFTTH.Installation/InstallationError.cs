@@ -8,7 +8,8 @@ public enum InstallationErrorCode
     NOT_INITIALIZED,
     ID_INVALID,
     INSTALLATION_ID_INVALID,
-    UNIT_ADDRESS_ID_INVALID
+    UNIT_ADDRESS_ID_INVALID,
+    NO_CHANGES
 }
 
 public class InstallationError : Error

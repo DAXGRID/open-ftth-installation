@@ -303,4 +303,69 @@ public class InstallationTests
         Assert.True(installation.LocationRemark == locationRemark);
         Assert.True(installation.UnitAddressId == unitAddressId);
     }
+
+    [Fact, Order(3)]
+    public void Cannot_change_installation_unit_address_id_when_not_initialized()
+    {
+        var unitAddressId = Guid.Parse("c273460f-e3c1-4ab5-939a-91952ffafa0e");
+
+        var installation = new InstallationAR();
+
+        var changeUnitAddressId = installation.ChangeUnitAddressId(unitAddressId);
+
+        Assert.True(changeUnitAddressId.IsFailed);
+        Assert.True(changeUnitAddressId.Errors.Count() == 1);
+        Assert.True(
+            ((InstallationError)changeUnitAddressId
+             .Errors
+             .First()
+            ).Code == InstallationErrorCode.NOT_INITIALIZED);
+    }
+
+    [Fact, Order(3)]
+    public void Cannot_change_installation_unit_address_id_to_empty_guid()
+    {
+        var id = Guid.Parse("75b98e4b-9b82-4a1a-99a5-097b1c65d1ad");
+        var unitAddressId = Guid.Empty;
+
+        var installation = _eventStore.Aggregates.Load<InstallationAR>(id);
+
+        var changeUnitAddressId = installation.ChangeUnitAddressId(unitAddressId);
+
+        Assert.True(changeUnitAddressId.IsFailed);
+        Assert.True(changeUnitAddressId.Errors.Count() == 1);
+        Assert.True(
+            ((InstallationError)changeUnitAddressId
+             .Errors
+             .First()
+            ).Code == InstallationErrorCode.UNIT_ADDRESS_ID_INVALID);
+    }
+
+    [Fact, Order(3)]
+    public void Can_change_unit_address_id()
+    {
+        var id = Guid.Parse("75b98e4b-9b82-4a1a-99a5-097b1c65d1ad");
+        var installationId = "F12345";
+        var status = "Changed";
+        var remark = "Updated Remark";
+        var locationRemark = "Updated location remark";
+        var unitAddressId = Guid.Parse("772ca9c1-6ac6-478a-8797-633a3cd012ea");
+
+        var installation = _eventStore.Aggregates.Load<InstallationAR>(id);
+
+        var changeLocationRemark = installation.ChangeLocationRemark(locationRemark);
+
+        _eventStore.Aggregates.Store(installation);
+
+        installation = _eventStore.Aggregates.Load<InstallationAR>(id);
+
+        Assert.True(changeLocationRemark.IsSuccess);
+        Assert.True(changeLocationRemark.Errors.Count() == 0);
+        Assert.True(installation.Id == id);
+        Assert.True(installation.InstallationId == installationId);
+        Assert.True(installation.Status == status);
+        Assert.True(installation.Remark == remark);
+        Assert.True(installation.LocationRemark == locationRemark);
+        Assert.True(installation.UnitAddressId == unitAddressId);
+    }
 }

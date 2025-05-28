@@ -195,6 +195,42 @@ public class InstallationTests
     }
 
     [Fact, Order(3)]
+    public void Cannot_change_installation_status_when_not_initialized()
+    {
+        var status = "Changed";
+
+        var installation = new InstallationAR();
+
+        var changeStatusResult = installation.ChangeStatus(status);
+
+        Assert.True(changeStatusResult.IsFailed);
+        Assert.True(changeStatusResult.Errors.Count() == 1);
+        Assert.True(
+            ((InstallationError)changeStatusResult
+             .Errors
+             .First()
+            ).Code == InstallationErrorCode.NOT_INITIALIZED);
+    }
+
+    [Fact, Order(3)]
+    public void Cannot_change_installation_remark_when_not_initialized()
+    {
+        var locationRemark = "Location remark";
+
+        var installation = new InstallationAR();
+
+        var changeRemarkResult = installation.ChangeRemark(locationRemark);
+
+        Assert.True(changeRemarkResult.IsFailed);
+        Assert.True(changeRemarkResult.Errors.Count() == 1);
+        Assert.True(
+            ((InstallationError)changeRemarkResult
+             .Errors
+             .First()
+            ).Code == InstallationErrorCode.NOT_INITIALIZED);
+    }
+
+    [Fact, Order(3)]
     public void Can_change_installation_remark()
     {
         var id = Guid.Parse("75b98e4b-9b82-4a1a-99a5-097b1c65d1ad");

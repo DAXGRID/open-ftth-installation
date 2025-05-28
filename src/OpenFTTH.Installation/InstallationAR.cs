@@ -73,6 +73,14 @@ public class InstallationAR : AggregateBase
 
     public Result ChangeStatus(string? status)
     {
+        if (!IsInitialized(Id))
+        {
+            return Result.Fail(
+                new InstallationError(
+                    InstallationErrorCode.NOT_INITIALIZED,
+                    $"Cannot update something that has not been initialized."));
+        }
+
         RaiseEvent(
            new InstallationStatusChanged(
                id: Id,
@@ -83,6 +91,14 @@ public class InstallationAR : AggregateBase
 
     public Result ChangeRemark(string? remark)
     {
+        if (!IsInitialized(Id))
+        {
+            return Result.Fail(
+                new InstallationError(
+                    InstallationErrorCode.NOT_INITIALIZED,
+                    $"Cannot update something that has not been initialized."));
+        }
+
         RaiseEvent(
            new InstallationRemarkChanged(
                id: Id,
